@@ -12,7 +12,7 @@ from .data import *
 from .constants import *
 
 registered = []
-keymap_items = []
+image_paint_keymap_items = []
 
 def make_texture_paint_brush_op_idname(i):
     return "quick_brush.texture_paint_brush_slot{x}".format(x=i + 1)
@@ -52,7 +52,7 @@ def register_keymaps(paint_brush_slots):
         km = kc.keymaps["Image Paint"]
         for i in range(0, paint_brush_slots):
             kmi = km.keymap_items.new(make_texture_paint_brush_op_idname(i), 'NONE', 'PRESS')
-            keymap_items.append(kmi)
+            image_paint_keymap_items.append(kmi)
 
 def unregister_keymaps():
     kc = bpy.context.window_manager.keyconfigs.addon
@@ -60,7 +60,7 @@ def unregister_keymaps():
         # Unregister texture paint bindings
         km = kc.keymaps["Image Paint"]
         for kmi in km.keymap_items:
-            if kmi in keymap_items:
+            if kmi in image_paint_keymap_items:
                 km.keymap_items.remove(kmi)
 
 def unregister_ops():
