@@ -8,11 +8,8 @@ bl_info = {
 }
 
 from .data import *
+from .constants import *
 
-# Config
-paint_brush_slot_count = 10
-
-# Internals
 registered = []
 keymap_items = []
 
@@ -30,7 +27,8 @@ def register_texture_paint_brush_slot_ops(n):
                 n = slot.brush.name
                 bpy.context.tool_settings.image_paint.brush = slot.brush
 
-            print("Slot {x} in mode {mode} (brush={n})".format(x=self.slot, mode=bpy.context.mode, n=n))
+            if DEBUG:
+                print("Slot {x} in mode {mode} (brush={n})".format(x=self.slot, mode=bpy.context.mode, n=n))
             return {'FINISHED'}
 
         op_type = type("QuickBrushPaintBrushSlot{x}Op".format(x=i+1), (bpy.types.Operator, ), {
@@ -69,8 +67,8 @@ def unregister_ops():
         bpy.utils.unregister_class(r)
 
 def register():
-    register_texture_paint_brush_slot_ops(paint_brush_slot_count)
-    register_keymaps(paint_brush_slot_count)
+    register_texture_paint_brush_slot_ops(SLOT_COUNT)
+    register_keymaps(SLOT_COUNT)
 
     bpy.utils.register_class(QuickBrushTexturePaintSlot)
     bpy.utils.register_class(QuickBrushProperties)

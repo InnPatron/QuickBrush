@@ -1,4 +1,5 @@
 import bpy
+from .constants import *
 
 def filter_image_texture_brush(self, b):
     return b.use_paint_image
@@ -11,7 +12,6 @@ class QuickBrushTexturePaintSlot(bpy.types.PropertyGroup):
     )
 
 class QuickBrushProperties(bpy.types.PropertyGroup):
-    texture_paint_slot_count: bpy.props.IntProperty(default=10)
     texture_paint_brush_slots: bpy.props.CollectionProperty(type=QuickBrushTexturePaintSlot)
 
 def try_init_collection(c, n):
@@ -44,9 +44,9 @@ class QuickBrushTexturePaintPanel(bpy.types.Panel):
         layout = self.layout
         my_data = context.workspace.quick_brush_data
 
-        try_init_collection(my_data.texture_paint_brush_slots, my_data.texture_paint_slot_count)
+        try_init_collection(my_data.texture_paint_brush_slots, SLOT_COUNT)
 
-        for i in range(0, my_data.texture_paint_slot_count):
+        for i in range(0, SLOT_COUNT):
             r = layout.row()
             c1 = r.column()
             c2 = r.column()
