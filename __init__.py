@@ -7,7 +7,7 @@ bl_info = {
     "category": "3D View",
 }
 
-from .data import QuickBrushProperties, QuickBrushPanel
+from .data import *
 
 # Config
 paint_brush_slot_count = 10
@@ -19,12 +19,18 @@ keymap_items = []
 def make_paint_brush_op_idname(i):
     return "quick_brush.paint_brush_slot{x}".format(x=i + 1)
 
-def register_paint_brush_slot_ops(n):
+def register_texture_paint_brush_slot_ops(n):
     for i in range(0, n):
         def execute(self, context):
-            my_data = context.workspace.quick_brush_data
-            print("Slot op {x} in mode {mode} (c={c})".format(x=self.slot, mode=bpy.context.mode, c=my_data.columns))
-            # bpy.context.tool_settings.image_paint.brush = bpy.data.brushes['multiply-chisel']
+            my_data = context.workspace.quick_brush_data.texture_paint_brush_slots
+            (_, slot) = my_data.items()[self.slot]
+
+            n = "NONE"
+            if slot.brush != None:
+                n = slot.brush.name
+                bpy.context.tool_settings.image_paint.brush = slot.brush
+
+            print("Slot {x} in mode {mode} (brush={n})".format(x=self.slot, mode=bpy.context.mode, n=n))
             return {'FINISHED'}
 
         op_type = type("QuickBrushPaintBrushSlot{x}Op".format(x=i+1), (bpy.types.Operator, ), {
@@ -63,11 +69,13 @@ def unregister_ops():
         bpy.utils.unregister_class(r)
 
 def register():
-    register_paint_brush_slot_ops(paint_brush_slot_count)
+    register_texture_paint_brush_slot_ops(paint_brush_slot_count)
     register_keymaps(paint_brush_slot_count)
 
-    bpy.utils.register_class(QuickBrushPanel)
+    bpy.utils.register_class(QuickBrushTexturePaintSlot)
     bpy.utils.register_class(QuickBrushProperties)
+    bpy.utils.register_class(QuickBrushPanel)
+    bpy.utils.register_class(QuickBrushTexturePaintPanel)
     bpy.types.WorkSpace.quick_brush_data = bpy.props.PointerProperty(type=QuickBrushProperties)
 
 def unregister():
@@ -76,6 +84,8 @@ def unregister():
 
     bpy.utils.unregister_class(QuickBrushPanel)
     bpy.utils.unregister_class(QuickBrushProperties)
+    bpy.utils.unregister_class(QuickBrushTexturePaintSlot)
+    bpy.utils.unregister_class(QuickBrushTexturePaintPanel)
     del bpy.types.WorkSpace.quick_brush_data
 
 if __name__ == "__main__":
