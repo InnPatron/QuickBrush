@@ -42,7 +42,7 @@ def unregister_keymaps():
                 km.keymap_items.remove(kmi)
 
 def unregister_ops():
-    bpy.utils.register_class(CopyTexturePaintBrushSlotsOp)
+    bpy.utils.unregister_class(CopyTexturePaintBrushSlotsOp)
     for r in registered:
         bpy.utils.unregister_class(r)
 
