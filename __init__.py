@@ -1,5 +1,3 @@
-import bpy
-
 bl_info = {
     "name": "Quick Brush",
     "description": "Set up keybindings for brushes",
@@ -7,38 +5,18 @@ bl_info = {
     "category": "3D View",
 }
 
+import bpy
 from .settings_ui import *
 from .data import *
 from .constants import *
+from .ops import *
 
 registered = []
 image_paint_keymap_items = []
 
-def make_texture_paint_brush_op_idname(i):
-    return "quick_brush.texture_paint_brush_slot{x}".format(x=i + 1)
-
 def register_texture_paint_brush_slot_ops(n):
     for i in range(0, n):
-        def execute(self, context):
-            my_data = context.workspace.quick_brush_data.texture_paint_brush_slots
-            (_, slot) = my_data.items()[self.slot]
-
-            n = "NONE"
-            if slot.brush != None:
-                n = slot.brush.name
-                bpy.context.tool_settings.image_paint.brush = slot.brush
-
-            if DEBUG:
-                print("Slot {x} in mode {mode} (brush={n})".format(x=self.slot, mode=bpy.context.mode, n=n))
-            return {'FINISHED'}
-
-        op_type = type("QuickBrushTexturePaintBrushSlot{x}Op".format(x=i+1), (bpy.types.Operator, ), {
-            "bl_idname": make_texture_paint_brush_op_idname(i),
-            "bl_label": "Quick Brush: Paint Brush Slot {x}".format(x=i+1),
-            "slot": i,
-            "execute": execute,
-        })
-
+        op_type = make_texture_brush_op(i)
         bpy.utils.register_class(op_type)
         registered.append(op_type)
 
