@@ -14,8 +14,8 @@ from .constants import *
 registered = []
 keymap_items = []
 
-def make_paint_brush_op_idname(i):
-    return "quick_brush.paint_brush_slot{x}".format(x=i + 1)
+def make_texture_paint_brush_op_idname(i):
+    return "quick_brush.texture_paint_brush_slot{x}".format(x=i + 1)
 
 def register_texture_paint_brush_slot_ops(n):
     for i in range(0, n):
@@ -32,8 +32,8 @@ def register_texture_paint_brush_slot_ops(n):
                 print("Slot {x} in mode {mode} (brush={n})".format(x=self.slot, mode=bpy.context.mode, n=n))
             return {'FINISHED'}
 
-        op_type = type("QuickBrushPaintBrushSlot{x}Op".format(x=i+1), (bpy.types.Operator, ), {
-            "bl_idname": make_paint_brush_op_idname(i),
+        op_type = type("QuickBrushTexturePaintBrushSlot{x}Op".format(x=i+1), (bpy.types.Operator, ), {
+            "bl_idname": make_texture_paint_brush_op_idname(i),
             "bl_label": "Quick Brush: Paint Brush Slot {x}".format(x=i+1),
             "slot": i,
             "execute": execute,
@@ -51,7 +51,7 @@ def register_keymaps(paint_brush_slots):
             kc.keymaps.new(name="Image Paint", space_type="EMPTY")
         km = kc.keymaps["Image Paint"]
         for i in range(0, paint_brush_slots):
-            kmi = km.keymap_items.new(make_paint_brush_op_idname(i), 'NONE', 'PRESS')
+            kmi = km.keymap_items.new(make_texture_paint_brush_op_idname(i), 'NONE', 'PRESS')
             keymap_items.append(kmi)
 
 def unregister_keymaps():
