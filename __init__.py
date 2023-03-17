@@ -7,6 +7,7 @@ bl_info = {
     "category": "3D View",
 }
 
+from .settings_ui import *
 from .data import *
 from .constants import *
 
