@@ -1,15 +1,6 @@
 import bpy
 from .constants import *
-
-def try_init_collection(c, n):
-    size = len(c)
-    diff = n - size
-    if size <= n:
-        for i in range(0, diff):
-            b = c.add()
-    else:
-        for i in range(0, diff):
-            c.pop()
+from .util import *
 
 class QuickBrushPanel(bpy.types.Panel):
     bl_label = "Quick Brush Workspace Settings"
@@ -18,7 +9,12 @@ class QuickBrushPanel(bpy.types.Panel):
     bl_region_type = 'UI'
 
     def draw(self, context):
+        my_data = context.workspace.quick_brush_data
         layout = self.layout
+
+        r = layout.row()
+        r.label(text="Copy To")
+        r.template_ID(my_data, "copy_to_target")
 
 class QuickBrushTexturePaintPanel(bpy.types.Panel):
     bl_label = "Texture Paint Settings"
@@ -32,6 +28,8 @@ class QuickBrushTexturePaintPanel(bpy.types.Panel):
         my_data = context.workspace.quick_brush_data
 
         try_init_collection(my_data.texture_paint_brush_slots, SLOT_COUNT)
+
+        layout.operator("quick_brush.copy_texture_paint_brush_slots", text="Copy Texture Paint Brushes")
 
         for i in range(0, SLOT_COUNT):
             r = layout.row()

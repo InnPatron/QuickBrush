@@ -42,6 +42,7 @@ def unregister_keymaps():
                 km.keymap_items.remove(kmi)
 
 def unregister_ops():
+    bpy.utils.register_class(CopyTexturePaintBrushSlotsOp)
     for r in registered:
         bpy.utils.unregister_class(r)
 
@@ -49,10 +50,13 @@ def register():
     register_texture_paint_brush_slot_ops(SLOT_COUNT)
     register_keymaps(SLOT_COUNT)
 
+    bpy.utils.register_class(CopyTexturePaintBrushSlotsOp)
+
     bpy.utils.register_class(QuickBrushTexturePaintSlot)
     bpy.utils.register_class(QuickBrushProperties)
     bpy.utils.register_class(QuickBrushPanel)
     bpy.utils.register_class(QuickBrushTexturePaintPanel)
+
     bpy.types.WorkSpace.quick_brush_data = bpy.props.PointerProperty(type=QuickBrushProperties)
 
 def unregister():

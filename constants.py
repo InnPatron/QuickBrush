@@ -1,3 +1,3 @@
 DEBUG = False
-# DEBUG = True
+#DEBUG = True
 SLOT_COUNT = 20

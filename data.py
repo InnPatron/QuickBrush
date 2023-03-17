@@ -11,4 +11,5 @@ class QuickBrushTexturePaintSlot(bpy.types.PropertyGroup):
     )
 
 class QuickBrushProperties(bpy.types.PropertyGroup):
+    copy_to_target: bpy.props.PointerProperty(type=bpy.types.WorkSpace)
     texture_paint_brush_slots: bpy.props.CollectionProperty(type=QuickBrushTexturePaintSlot)
