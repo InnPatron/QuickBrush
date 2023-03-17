@@ -17,20 +17,19 @@ registered = []
 keymap_items = []
 
 def make_paint_brush_op_idname(i):
-    return "quick_brush.paint_brush_slot{x}".format(x=i)
+    return "quick_brush.paint_brush_slot{x}".format(x=i + 1)
 
 def register_paint_brush_slot_ops(n):
     for i in range(0, n):
-
         def execute(self, context):
             my_data = context.workspace.quick_brush_data
             print("Slot op {x} in mode {mode} (c={c})".format(x=self.slot, mode=bpy.context.mode, c=my_data.columns))
             # bpy.context.tool_settings.image_paint.brush = bpy.data.brushes['multiply-chisel']
             return {'FINISHED'}
 
-        op_type = type("QuickBrushPaintBrushSlot{x}Op".format(x=i), (bpy.types.Operator, ), {
+        op_type = type("QuickBrushPaintBrushSlot{x}Op".format(x=i+1), (bpy.types.Operator, ), {
             "bl_idname": make_paint_brush_op_idname(i),
-            "bl_label": "Quick Brush: Paint Brush Slot {x}".format(x=i),
+            "bl_label": "Quick Brush: Paint Brush Slot {x}".format(x=i+1),
             "slot": i,
             "execute": execute,
         })
